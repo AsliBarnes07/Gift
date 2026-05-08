@@ -28,28 +28,26 @@
             justify-content: center;
             align-items: center;
         }
-
-        .profile-container { display: flex; gap: 2vw; justify-content: center; flex-wrap: wrap; }
+        .profile-container { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
         .profile { cursor: pointer; width: 150px; text-align: center; }
         .profile img { width: 100%; aspect-ratio: 1/1; border-radius: 4px; transition: 0.2s; border: 3px solid transparent; }
         .profile:hover img { transform: scale(1.05); border: 3px solid white; }
+        .profile p { color: #808080; margin-top: 10px; font-size: 1.2rem; }
 
-        /* 2. TRANSITION ANIMATION */
+        /* 2. TRANSITION */
         #login-animation {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: black;
-            z-index: 5000;
-            justify-content: center;
-            align-items: center;
+            background: black; z-index: 5000;
+            justify-content: center; align-items: center;
         }
         .n-logo { width: 150px; animation: zoomAndFade 2.5s forwards; }
         @keyframes zoomAndFade { 0% { transform: scale(1); } 100% { transform: scale(4); opacity: 0; } }
 
-        /* 3. FEATURED HERO SECTION */
+        /* 3. HERO SECTION (Featured Memory) */
         #hero-section {
-            height: 80vh;
+            height: 85vh;
             position: relative;
             background-size: cover;
             background-position: center;
@@ -57,50 +55,58 @@
             align-items: center;
             padding: 0 4%;
         }
-
-        /* Creates the Netflix gradient fade at the bottom of the hero */
+        /* Netflix Bottom Fade Overlay */
         #hero-section::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 150px;
+            bottom: 0; left: 0; width: 100%; height: 40%;
             background: linear-gradient(to top, var(--bg-color), transparent);
         }
-
-        .hero-content {
-            z-index: 10;
-            max-width: 600px;
+        .hero-content { z-index: 10; max-width: 700px; }
+        .hero-title { font-size: 4.5rem; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .hero-desc { font-size: 1.3rem; margin-bottom: 25px; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); line-height: 1.4; }
+        
+        .hero-buttons { display: flex; gap: 15px; }
+        .btn {
+            padding: 12px 35px; border-radius: 4px; font-weight: bold; font-size: 1.2rem;
+            border: none; cursor: pointer; display: flex; align-items: center; gap: 10px;
         }
+        .btn-play { background: white; color: black; }
+        .btn-play:hover { background: rgba(255,255,255,0.7); }
+        .btn-info { background: rgba(109, 109, 110, 0.7); color: white; }
+        .btn-info:hover { background: rgba(109, 109, 110, 0.4); }
 
-        .hero-title { font-size: 4rem; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
-        .hero-desc { font-size: 1.2rem; margin-bottom: 20px; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
-
-        .play-btn {
-            background: white;
-            color: black;
-            padding: 10px 30px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            border: none;
-            cursor: pointer;
+        /* 4. SCROLLABLE ROWS */
+        #gallery-screen { display: none; margin-top: -120px; position: relative; z-index: 20; padding-bottom: 50px; }
+        .row { padding-left: 4%; margin-bottom: 30px; }
+        .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
+        
+        .row-scroll {
             display: flex;
-            align-items: center;
             gap: 10px;
+            overflow-x: scroll;
+            padding: 20px 0;
+            scrollbar-width: none; /* Hide for Firefox */
         }
-        .play-btn:hover { background: rgba(255,255,255,0.7); }
+        .row-scroll::-webkit-scrollbar { display: none; } /* Hide for Chrome */
 
-        /* 4. GALLERY ROWS */
-        #gallery-screen { display: none; padding: 20px 4%; }
-        .row-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 15px; }
-        .row-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .movie-card { background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: 0.3s; overflow: hidden; }
-        .movie-card:hover { transform: scale(1.05); z-index: 5; }
-        .movie-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+        .movie-card {
+            min-width: 300px;
+            aspect-ratio: 16/9;
+            background: #2f2f2f;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.4s ease-out;
+            overflow: hidden;
+        }
+        .movie-card:hover { transform: scale(1.15); z-index: 100; }
+        .movie-card img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 5. MODAL PLAYER */
+        /* 5. MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 6000; }
-        .modal-content { width: 95%; max-width: 900px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; overflow: hidden; }
-        video { width: 100%; aspect-ratio: 16/9; }
+        .modal-content { width: 95%; max-width: 850px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; overflow: hidden; }
+        video { width: 100%; background: #000; }
+        .modal-body { padding: 25px; }
         .close-btn { position: absolute; top: 15px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 6001; }
     </style>
 </head>
@@ -111,10 +117,10 @@
     <div id="profile-screen">
         <h1>Who's watching?</h1>
         <div class="profile-container">
-            <div class="profile" onclick="alert('Access Denied')"><img src="./alan.jpg?v=1"><p>Alan</p></div>
-            <div class="profile" onclick="alert('Access Denied')"><img src="./aiden.jpg?v=1"><p>Aiden</p></div>
+            <div class="profile" onclick="alert('Access Restricted')"><img src="./alan.jpg?v=1"><p>Alan</p></div>
+            <div class="profile" onclick="alert('Access Restricted')"><img src="./aiden.jpg?v=1"><p>Aiden</p></div>
             <div class="profile" onclick="startLogin()"><img src="./mom.jpg?v=1"><p>Mom</p></div>
-            <div class="profile" onclick="alert('Access Denied')"><img src="./dad.jpg?v=1"><p>Dad</p></div>
+            <div class="profile" onclick="alert('Access Restricted')"><img src="./dad.jpg?v=1"><p>Dad</p></div>
         </div>
     </div>
 
@@ -125,33 +131,44 @@
     <div id="hero-section">
         <div class="hero-content">
             <div class="hero-title">Barnes Family Memories</div>
-            <div class="hero-desc">The most heartwarming collection of our favorite times together. Dedicated to the best Mom in the world.</div>
-            <button class="play-btn" onclick="openVideo(0)">▶ Play</button>
+            <div class="hero-desc">Every moment captured, from the graduation marches to the quiet mornings. A special collection curated just for Mom.</div>
+            <div class="hero-buttons">
+                <button class="btn btn-play" onclick="openVideo(0)">▶ Play</button>
+                <button class="btn btn-info" onclick="alert('This is a collection of our best memories!')">ⓘ More Info</button>
+            </div>
         </div>
     </div>
 
     <div id="gallery-screen">
-        <div class="row-title">Because You Watched: Last Summer</div>
-        <div id="movie-grid" class="row-container"></div>
+        <div class="row">
+            <div class="row-title">Trending Now</div>
+            <div id="row-1" class="row-scroll"></div>
+        </div>
+        <div class="row">
+            <div class="row-title">Because You Are The Best</div>
+            <div id="row-2" class="row-scroll"></div>
+        </div>
     </div>
 
     <div id="video-modal" class="modal">
         <span class="close-btn" onclick="closeVideo()">&times;</span>
         <div class="modal-content">
             <video id="main-player" controls></video>
-            <div style="padding:20px;">
+            <div class="modal-body">
                 <h2 id="modal-title" style="margin:0;"></h2>
-                <p id="modal-desc" style="color:#ccc;"></p>
+                <p id="modal-desc" style="color:#808080; margin-top:10px;"></p>
             </div>
         </div>
     </div>
 
     <script>
         const memoryData = [
-            { title: "Summer Lake Trip", desc: "One of the best days ever.", file: "video1.mp4", thumb: "pic1.jpg" },
-            { title: "Graduation Prep", desc: "Almost there! Thanks for everything.", file: "video2.mp4", thumb: "pic2.jpg" },
-            { title: "Family Picnic", desc: "Good food and even better company.", file: "video3.mp4", thumb: "pic3.jpg" },
-            { title: "Holiday Fun", desc: "The house was so full of life this day.", file: "video4.mp4", thumb: "pic4.jpg" }
+            { title: "Summer Lake Trip", desc: "A great day out on the water.", file: "video1.mp4", thumb: "pic1.jpg" },
+            { title: "The Big Graduation", desc: "A proud day for the Barnes family.", file: "video2.mp4", thumb: "pic2.jpg" },
+            { title: "Birthday Bash", desc: "Celebrating in style at home.", file: "video3.mp4", thumb: "pic3.jpg" },
+            { title: "West Point Visit", desc: "Touring the grounds together.", file: "video4.mp4", thumb: "pic4.jpg" },
+            { title: "Holiday Magic", desc: "Opening presents by the tree.", file: "video5.mp4", thumb: "pic5.jpg" },
+            { title: "Weekend Brunch", desc: "Nothing beats a family breakfast.", file: "video6.mp4", thumb: "pic6.jpg" }
         ];
 
         function startLogin() {
@@ -161,27 +178,31 @@
 
             setTimeout(() => {
                 document.getElementById('login-animation').style.display = 'none';
-                enterApp();
+                enterGallery();
             }, 2500);
         }
 
-        function enterApp() {
-            // Set the Hero Background
+        function enterGallery() {
             const hero = document.getElementById('hero-section');
             hero.style.backgroundImage = "url('./background.jpg')";
             hero.style.display = 'flex';
-            
-            // Show the Gallery
             document.getElementById('gallery-screen').style.display = 'block';
             
-            // Build the cards
-            const grid = document.getElementById('movie-grid');
-            grid.innerHTML = memoryData.map((m, i) => `
+            // Build Row 1 (Memories 0-3)
+            const r1 = document.getElementById('row-1');
+            r1.innerHTML = memoryData.slice(0, 4).map((m, i) => createCard(m, i)).join('');
+            
+            // Build Row 2 (Memories 4-5 + repeats for length)
+            const r2 = document.getElementById('row-2');
+            r2.innerHTML = memoryData.slice(2, 6).map((m, i) => createCard(m, i + 2)).join('');
+        }
+
+        function createCard(m, i) {
+            return `
                 <div class="movie-card" onclick="openVideo(${i})">
                     <img src="./${m.thumb}?v=1">
-                    <div style="padding:10px;"><b>${m.title}</b></div>
                 </div>
-            `).join('');
+            `;
         }
 
         function openVideo(i) {
