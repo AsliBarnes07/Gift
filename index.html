@@ -16,10 +16,7 @@
             color: var(--text-color); 
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
             margin: 0; 
-            transition: background 1s ease-in-out;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            overflow-x: hidden;
         }
 
         /* 1. PROFILE SCREEN */
@@ -30,19 +27,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: var(--bg-color);
         }
 
-        h1 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 30px; }
-
         .profile-container { display: flex; gap: 2vw; justify-content: center; flex-wrap: wrap; }
-        .profile { cursor: pointer; width: 150px; text-align: center; transition: 0.3s; }
+        .profile { cursor: pointer; width: 150px; text-align: center; }
         .profile img { width: 100%; aspect-ratio: 1/1; border-radius: 4px; transition: 0.2s; border: 3px solid transparent; }
         .profile:hover img { transform: scale(1.05); border: 3px solid white; }
-        .profile p { color: #808080; margin-top: 10px; font-size: 1.2rem; }
-        .profile:hover p { color: white; }
 
-        /* 2. LOGIN ANIMATION (The "N" Intro) */
+        /* 2. TRANSITION ANIMATION */
         #login-animation {
             display: none;
             position: fixed;
@@ -52,69 +44,94 @@
             justify-content: center;
             align-items: center;
         }
+        .n-logo { width: 150px; animation: zoomAndFade 2.5s forwards; }
+        @keyframes zoomAndFade { 0% { transform: scale(1); } 100% { transform: scale(4); opacity: 0; } }
 
-        .n-logo {
-            width: 150px;
-            animation: zoomAndFade 2.5s forwards;
+        /* 3. FEATURED HERO SECTION */
+        #hero-section {
+            height: 80vh;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            display: none;
+            align-items: center;
+            padding: 0 4%;
         }
 
-        @keyframes zoomAndFade {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(4); opacity: 0; }
+        /* Creates the Netflix gradient fade at the bottom of the hero */
+        #hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 150px;
+            background: linear-gradient(to top, var(--bg-color), transparent);
         }
 
-        /* 3. MAIN GALLERY */
-        #gallery-screen { 
-            display: none; 
-            padding: 40px 4%; 
-            min-height: 100vh;
-            background: rgba(0, 0, 0, 0.6); /* Adds contrast against background image */
+        .hero-content {
+            z-index: 10;
+            max-width: 600px;
         }
-        
-        .logo { color: var(--netflix-red); font-size: 2.5rem; font-weight: bold; margin-bottom: 30px; }
-        .row-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
-        .movie-card {
-            background: rgba(47, 47, 47, 0.8);
+        .hero-title { font-size: 4rem; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .hero-desc { font-size: 1.2rem; margin-bottom: 20px; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
+
+        .play-btn {
+            background: white;
+            color: black;
+            padding: 10px 30px;
             border-radius: 4px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: none;
             cursor: pointer;
-            transition: 0.3s;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .movie-card:hover { transform: scale(1.05); z-index: 5; background: #2f2f2f; }
+        .play-btn:hover { background: rgba(255,255,255,0.7); }
+
+        /* 4. GALLERY ROWS */
+        #gallery-screen { display: none; padding: 20px 4%; }
+        .row-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 15px; }
+        .row-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .movie-card { background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: 0.3s; overflow: hidden; }
+        .movie-card:hover { transform: scale(1.05); z-index: 5; }
         .movie-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
 
-        /* 4. MODAL PLAYER */
+        /* 5. MODAL PLAYER */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 6000; }
-        .modal-content { width: 95%; max-width: 900px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; }
-        .modal-body { padding: 30px; }
+        .modal-content { width: 95%; max-width: 900px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; overflow: hidden; }
         video { width: 100%; aspect-ratio: 16/9; }
-        .close-btn { position: absolute; top: 15px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; }
+        .close-btn { position: absolute; top: 15px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 6001; }
     </style>
 </head>
 <body>
 
-    <audio id="tudum-sound" src="https://www.myinstants.com/media/sounds/tudum.mp3" preload="auto"></audio>
+    <audio id="tudum-sound" src="https://www.myinstants.com/media/sounds/tudum.mp3"></audio>
 
     <div id="profile-screen">
         <h1>Who's watching?</h1>
         <div class="profile-container">
             <div class="profile" onclick="alert('Access Denied')"><img src="./alan.jpg?v=1"><p>Alan</p></div>
             <div class="profile" onclick="alert('Access Denied')"><img src="./aiden.jpg?v=1"><p>Aiden</p></div>
-            <div class="profile" onclick="startLoginSequence()"><img src="./mom.jpg?v=1"><p>Mom</p></div>
+            <div class="profile" onclick="startLogin()"><img src="./mom.jpg?v=1"><p>Mom</p></div>
             <div class="profile" onclick="alert('Access Denied')"><img src="./dad.jpg?v=1"><p>Dad</p></div>
         </div>
     </div>
 
     <div id="login-animation">
-        <img class="n-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
+        <img class="n-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
+    </div>
+
+    <div id="hero-section">
+        <div class="hero-content">
+            <div class="hero-title">Barnes Family Memories</div>
+            <div class="hero-desc">The most heartwarming collection of our favorite times together. Dedicated to the best Mom in the world.</div>
+            <button class="play-btn" onclick="openVideo(0)">▶ Play</button>
+        </div>
     </div>
 
     <div id="gallery-screen">
-        <div class="logo">MEMORIES</div>
-        <h2 style="margin-bottom: 25px;">Handpicked for You</h2>
+        <div class="row-title">Because You Watched: Last Summer</div>
         <div id="movie-grid" class="row-container"></div>
     </div>
 
@@ -122,7 +139,7 @@
         <span class="close-btn" onclick="closeVideo()">&times;</span>
         <div class="modal-content">
             <video id="main-player" controls></video>
-            <div class="modal-body">
+            <div style="padding:20px;">
                 <h2 id="modal-title" style="margin:0;"></h2>
                 <p id="modal-desc" style="color:#ccc;"></p>
             </div>
@@ -137,35 +154,32 @@
             { title: "Holiday Fun", desc: "The house was so full of life this day.", file: "video4.mp4", thumb: "pic4.jpg" }
         ];
 
-        function startLoginSequence() {
-            // Play Sound
-            const sound = document.getElementById('tudum-sound');
-            sound.play();
-
-            // Show Animation
+        function startLogin() {
+            document.getElementById('tudum-sound').play();
             document.getElementById('profile-screen').style.display = 'none';
             document.getElementById('login-animation').style.display = 'flex';
 
-            // Wait for animation, then show Gallery
             setTimeout(() => {
                 document.getElementById('login-animation').style.display = 'none';
-                enterGallery();
+                enterApp();
             }, 2500);
         }
 
-        function enterGallery() {
-            // Update Background
-            document.body.style.backgroundImage = "url('./background.jpg')";
+        function enterApp() {
+            // Set the Hero Background
+            const hero = document.getElementById('hero-section');
+            hero.style.backgroundImage = "url('./background.jpg')";
+            hero.style.display = 'flex';
             
-            // Show Gallery
+            // Show the Gallery
             document.getElementById('gallery-screen').style.display = 'block';
             
-            // Render Cards
+            // Build the cards
             const grid = document.getElementById('movie-grid');
             grid.innerHTML = memoryData.map((m, i) => `
                 <div class="movie-card" onclick="openVideo(${i})">
                     <img src="./${m.thumb}?v=1">
-                    <div style="padding:15px;"><b>${m.title}</b></div>
+                    <div style="padding:10px;"><b>${m.title}</b></div>
                 </div>
             `).join('');
         }
