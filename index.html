@@ -110,7 +110,6 @@
     </div>
 
     <script>
-        // THE DATA (Update version v=2 to force browser refresh)
         const personalMemories = [
             { 
                 title: "Where Motherhood Began", 
@@ -119,8 +118,8 @@
                 thumb: "pic1.jpg" 
             },
             { 
-                title: "Family Moments", 
-                desc: "Capturing the laughter and the times we spend together.", 
+                title: "The Family Grows", 
+                desc: "Our family expanded and we welcomed Aiden into the world! We all love Aiden so much, and life became even brighter with him here.", 
                 file: "video2.mp4", 
                 thumb: "pic2.jpg" 
             }
@@ -150,9 +149,9 @@
             hero.style.display = 'flex';
             document.getElementById('gallery-screen').style.display = 'block';
             
-            // Versioning '?v=2' ensures the latest text/images are fetched
+            // Added ?v=3 to force cache refresh
             document.getElementById('row-personal').innerHTML = personalMemories.map((m, i) => `
-                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=2"></div>
+                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=3"></div>
             `).join('');
 
             document.getElementById('row-filler').innerHTML = fillerMovies.map(m => `
@@ -163,7 +162,7 @@
         function openVideo(i) {
             const m = personalMemories[i];
             const player = document.getElementById('main-player');
-            player.src = m.file + "?v=2";
+            player.src = m.file + "?v=3";
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block';
