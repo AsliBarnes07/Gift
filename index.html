@@ -40,17 +40,9 @@
         #gallery-screen { display: none; margin-top: -120px; position: relative; z-index: 20; padding-bottom: 100px; }
         .row { position: relative; padding: 0 4%; margin-bottom: 40px; }
         .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
-
         .row-wrapper { position: relative; display: flex; align-items: center; }
 
-        .row-scroll { 
-            display: flex; 
-            gap: 10px; 
-            overflow-x: auto; 
-            padding: 20px 0; 
-            scrollbar-width: none; 
-            scroll-behavior: smooth;
-        }
+        .row-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; scroll-behavior: smooth; }
         .row-scroll::-webkit-scrollbar { display: none; }
 
         .movie-card { min-width: 300px; aspect-ratio: 16/9; background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: transform 0.4s; overflow: hidden; }
@@ -58,22 +50,7 @@
         .movie-card img { width: 100%; height: 100%; object-fit: cover; }
 
         /* ARROWS */
-        .handle {
-            position: absolute;
-            top: 20px; bottom: 20px;
-            width: 4%;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            cursor: pointer;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s, background 0.3s;
-            border: none;
-        }
+        .handle { position: absolute; top: 20px; bottom: 20px; width: 4%; background: rgba(0,0,0,0.5); color: white; display: flex; justify-content: center; align-items: center; font-size: 2rem; cursor: pointer; z-index: 1000; opacity: 0; transition: opacity 0.3s, background 0.3s; border: none; }
         .row:hover .handle { opacity: 1; }
         .handle:hover { background: rgba(0,0,0,0.8); font-size: 2.5rem; }
         .left-handle { left: 0; border-radius: 0 4px 4px 0; }
@@ -161,21 +138,40 @@
     </div>
 
     <script>
-        const TOTAL_XPICS = 8; // Update this to match your uploads
+        const TOTAL_XPICS = 10; 
 
         const personalMemories = [
-            { title: "Where Motherhood Began", desc: "The birth of Alan. The start of it all.", file: "video1.mp4", thumb: "pic1.jpg" },
-            { title: "The Family Grows", desc: "Welcoming Aiden! We all love him so much.", file: "video2.mp4", thumb: "pic2.jpg" },
-            { title: "West Point Visit", desc: "A proud day together.", file: "video3.mp4", thumb: "pic3.jpg" },
-            { title: "Holiday Magic", desc: "Christmas at home.", file: "video4.mp4", thumb: "pic4.jpg" }
+            { 
+                title: "Where Motherhood Began", 
+                desc: "This is where it all started—the birth of Alan. The beginning of a lifelong journey and a love that knows no bounds.", 
+                file: "video1.mp4", 
+                thumb: "pic1.jpg" 
+            },
+            { 
+                title: "The Family Grows", 
+                desc: "Our family expanded and we welcomed Aiden into the world! We all love Aiden so much, and life became even brighter with him here.", 
+                file: "video2.mp4", 
+                thumb: "pic2.jpg" 
+            },
+            { 
+                title: "Zen Joins the Pack", 
+                desc: "Four paws and a heart of gold! Adding Zen to our family brought so much energy and joy to our home. He's been the perfect addition.", 
+                file: "video3.mp4", 
+                thumb: "pic3.jpg" 
+            },
+            { 
+                title: "To Many More Memories", 
+                desc: "Here is to a lifetime of laughter, adventures, and love. Thank you for being such an awesome mother—we can't wait to make many more memories with you!", 
+                file: "video4.mp4", 
+                thumb: "pic4.jpg" 
+            }
         ];
 
         const fillerMovies = [
             { thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500" },
             { thumb: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500" },
             { thumb: "https://images.unsplash.com/photo-1591035897819-f4bdf739f446?w=500" },
-            { thumb: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=500" },
-            { thumb: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500" }
+            { thumb: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=500" }
         ];
 
         function startLogin() {
@@ -196,7 +192,7 @@
             document.getElementById('gallery-screen').style.display = 'block';
             
             document.getElementById('row-personal').innerHTML = personalMemories.map((m, i) => `
-                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=6"></div>
+                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=7"></div>
             `).join('');
 
             document.getElementById('row-filler').innerHTML = fillerMovies.map(m => `
@@ -205,15 +201,14 @@
 
             let xPicHTML = "";
             for (let i = 1; i <= TOTAL_XPICS; i++) {
-                xPicHTML += `<div class="movie-card"><img src="./xpic${i}.jpg?v=6"></div>`;
+                xPicHTML += `<div class="movie-card"><img src="./xpic${i}.jpg?v=7"></div>`;
             }
             document.getElementById('row-xpics').innerHTML = xPicHTML;
         }
 
-        // SCROLL FUNCTION
         function scrollRow(rowId, direction) {
             const row = document.getElementById(rowId);
-            const scrollAmount = row.clientWidth * 0.8; // Scroll 80% of the screen width
+            const scrollAmount = row.clientWidth * 0.8; 
             row.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
         }
 
@@ -224,7 +219,7 @@
         function openVideo(i) {
             const m = personalMemories[i];
             const player = document.getElementById('main-player');
-            player.src = m.file + "?v=6";
+            player.src = m.file + "?v=7";
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block';
