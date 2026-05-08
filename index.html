@@ -19,18 +19,18 @@
             overflow-x: hidden;
         }
 
-        /* --- NAVIGATION --- */
+        /* NAVIGATION */
         #main-nav {
             position: fixed;
             top: 0; width: 100%; height: 70px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, transparent);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 10%, transparent);
             display: flex; align-items: center; padding: 0 4%;
             z-index: 1000; transition: background 0.5s;
         }
-        .nav-logo { color: var(--netflix-red); font-size: 1.8rem; font-weight: bold; margin-right: 25px; cursor: pointer; }
+        .nav-logo { color: var(--netflix-red); font-size: 1.8rem; font-weight: bold; margin-right: 25px; cursor: pointer; text-transform: uppercase; }
         .nav-links { display: flex; gap: 20px; font-size: 0.9rem; color: #e5e5e5; list-style: none; padding: 0; }
 
-        /* --- PROFILE SCREEN --- */
+        /* PROFILE SCREEN */
         #profile-screen {
             display: flex; text-align: center; height: 100vh;
             flex-direction: column; justify-content: center; align-items: center;
@@ -41,7 +41,7 @@
         .profile:hover img { transform: scale(1.05); border: 3px solid white; }
         .profile p { color: #808080; margin-top: 10px; font-size: 1.2rem; }
 
-        /* --- LOGIN ANIMATION --- */
+        /* TRANSITION */
         #login-animation {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: black; z-index: 5000; justify-content: center; align-items: center;
@@ -49,19 +49,19 @@
         .n-logo { width: 150px; animation: zoomAndFade 2.5s forwards; }
         @keyframes zoomAndFade { 0% { transform: scale(1); } 100% { transform: scale(4); opacity: 0; } }
 
-        /* --- BILLBOARD (HERO) SECTION --- */
+        /* BILLBOARD (HERO) */
         #hero-section {
             height: 85vh; position: relative;
             background-size: cover; background-position: center;
             display: none; align-items: center; padding: 0 4%;
         }
         #hero-section::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 30%;
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 35%;
             background: linear-gradient(to top, var(--bg-color), transparent);
         }
-        .hero-content { z-index: 10; max-width: 600px; }
-        .hero-title { font-size: clamp(2rem, 8vw, 4.5rem); font-weight: bold; margin-bottom: 10px; }
-        .hero-desc { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.4; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero-content { z-index: 10; max-width: 650px; }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .hero-desc { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.4; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
         .hero-btns { display: flex; gap: 15px; }
         .btn {
             padding: 12px 30px; border-radius: 4px; font-weight: bold; font-size: 1.1rem;
@@ -71,27 +71,24 @@
         .btn-play:hover { background: #e6e6e6; }
         .btn-info { background: rgba(109, 109, 110, 0.7); color: white; }
 
-        /* --- SCROLLING ROWS --- */
-        #gallery-screen { display: none; margin-top: -100px; position: relative; z-index: 20; padding-bottom: 100px; }
+        /* ROWS */
+        #gallery-screen { display: none; margin-top: -120px; position: relative; z-index: 20; padding-bottom: 100px; }
         .row { padding-left: 4%; margin-bottom: 40px; }
         .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
-        .row-scroll {
-            display: flex; gap: 10px; overflow-x: auto; padding: 20px 0;
-            scrollbar-width: none;
-        }
+        .row-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; }
         .row-scroll::-webkit-scrollbar { display: none; }
         .movie-card {
-            min-width: 280px; aspect-ratio: 16/9; background: #2f2f2f;
+            min-width: 300px; aspect-ratio: 16/9; background: #2f2f2f;
             border-radius: 4px; cursor: pointer; transition: transform 0.4s; overflow: hidden;
         }
         .movie-card:hover { transform: scale(1.1); z-index: 100; }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- MODAL --- */
+        /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 6000; }
-        .modal-content { width: 90%; max-width: 800px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; overflow: hidden; }
+        .modal-content { width: 90%; max-width: 850px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; overflow: hidden; }
         video { width: 100%; background: #000; }
-        .modal-body { padding: 25px; }
+        .modal-body { padding: 30px; }
         .close-btn { position: absolute; top: 15px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 6001; }
     </style>
 </head>
@@ -100,22 +97,22 @@
     <audio id="tudum-sound" src="https://www.myinstants.com/media/sounds/tudum.mp3"></audio>
 
     <nav id="main-nav" style="display:none;">
-        <div class="nav-logo">MEMORIES</div>
+        <div class="nav-logo">Memories</div>
         <ul class="nav-links">
             <li>Home</li>
             <li>Family</li>
             <li>Nature</li>
-            <li>Favorites</li>
+            <li>New & Popular</li>
         </ul>
     </nav>
 
     <div id="profile-screen">
         <h1>Who's watching?</h1>
         <div class="profile-container">
-            <div class="profile" onclick="alert('Access Restricted')"><img src="./alan.jpg?v=1"><p>Alan</p></div>
-            <div class="profile" onclick="alert('Access Restricted')"><img src="./aiden.jpg?v=1"><p>Aiden</p></div>
-            <div class="profile" onclick="startLogin()"><img src="./mom.jpg?v=1"><p>Mom</p></div>
-            <div class="profile" onclick="alert('Access Restricted')"><img src="./dad.jpg?v=1"><p>Dad</p></div>
+            <div class="profile" onclick="alert('Access Restricted')"><img src="./alan.jpg"><p>Alan</p></div>
+            <div class="profile" onclick="alert('Access Restricted')"><img src="./aiden.jpg"><p>Aiden</p></div>
+            <div class="profile" onclick="startLogin()"><img src="./mom.jpg"><p>Mom</p></div>
+            <div class="profile" onclick="alert('Access Restricted')"><img src="./dad.jpg"><p>Dad</p></div>
         </div>
     </div>
 
@@ -126,25 +123,25 @@
     <div id="hero-section">
         <div class="hero-content">
             <div class="hero-title">Barnes Family Memories</div>
-            <div class="hero-desc">Experience the journey of a lifetime. From milestones at West Point to quiet afternoons in nature, this collection is dedicated to the heart of our family.</div>
+            <div class="hero-desc">From the very first day Alan was born to our latest adventures. A special collection curated for the woman who made it all possible.</div>
             <div class="hero-btns">
                 <button class="btn btn-play" onclick="openVideo(0)">▶ Play</button>
-                <button class="btn btn-info">ⓘ More Info</button>
+                <button class="btn btn-info" onclick="alert('Everything in this collection is made with love by Alan.')">ⓘ More Info</button>
             </div>
         </div>
     </div>
 
     <div id="gallery-screen">
         <div class="row">
-            <div class="row-title">Our Best Moments</div>
+            <div class="row-title">Our Shared Journey</div>
             <div id="row-personal" class="row-scroll"></div>
         </div>
         <div class="row">
-            <div class="row-title">Mom's Favorite Nature Escapes</div>
+            <div class="row-title">Mom's Nature Escapes</div>
             <div id="row-nature" class="row-scroll"></div>
         </div>
         <div class="row">
-            <div class="row-title">Motherly Movies & Classics</div>
+            <div class="row-title">Because You're The Best Mom</div>
             <div id="row-motherly" class="row-scroll"></div>
         </div>
     </div>
@@ -155,35 +152,43 @@
             <video id="main-player" controls></video>
             <div class="modal-body">
                 <h2 id="modal-title" style="margin:0;"></h2>
-                <p id="modal-desc" style="color:#808080; margin-top:10px;"></p>
+                <p id="modal-desc" style="color:#a3a3a3; margin-top:10px; font-size: 1.1rem;"></p>
             </div>
         </div>
     </div>
 
     <script>
-        // Your real videos
         const personalMemories = [
-            { title: "Memory 1", desc: "A beautiful day together.", file: "video1.mp4", thumb: "pic1.jpg" },
-            { title: "Memory 2", desc: "Capturing the laughter.", file: "video2.mp4", thumb: "pic2.jpg" }
+            { 
+                title: "Where Motherhood Began", 
+                desc: "This is where it all started—the birth of Alan. The beginning of a lifelong journey and a love that knows no bounds.", 
+                file: "video1.mp4", 
+                thumb: "pic1.jpg" 
+            },
+            { 
+                title: "Memory 2", 
+                desc: "Capturing more of our favorite family moments together.", 
+                file: "video2.mp4", 
+                thumb: "pic2.jpg" 
+            }
         ];
 
-        // Filler Content
         const natureMovies = [
-            { title: "Secret Forest", thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=400&q=60" },
-            { title: "Ocean Breezes", thumb: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=60" },
-            { title: "Mountain High", thumb: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=400&q=60" },
-            { title: "Desert Sun", thumb: "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=400&q=60" }
+            { title: "Deep Forest", thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=500&q=60" },
+            { title: "Serene Waves", thumb: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=60" },
+            { title: "Peak Silence", thumb: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=500&q=60" },
+            { title: "Golden Desert", thumb: "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=500&q=60" }
         ];
 
         const motherlyMovies = [
-            { title: "A Mother's Love", thumb: "https://images.unsplash.com/photo-1591035897819-f4bdf739f446?auto=format&fit=crop&w=400&q=60" },
-            { title: "Family Dinner", thumb: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?auto=format&fit=crop&w=400&q=60" },
-            { title: "Generations", thumb: "https://images.unsplash.com/photo-1536640712247-3a97c2c29410?auto=format&fit=crop&w=400&q=60" },
-            { title: "Home Sweet Home", thumb: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=60" }
+            { title: "Kindness", thumb: "https://images.unsplash.com/photo-1591035897819-f4bdf739f446?auto=format&fit=crop&w=500&q=60" },
+            { title: "The Dinner Table", thumb: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?auto=format&fit=crop&w=500&q=60" },
+            { title: "Heritage", thumb: "https://images.unsplash.com/photo-1536640712247-3a97c2c29410?auto=format&fit=crop&w=500&q=60" },
+            { title: "First Steps", thumb: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=500&q=60" }
         ];
 
         function startLogin() {
-            document.getElementById('tudum-sound').play();
+            document.getElementById('tudum-sound').play().catch(() => {});
             document.getElementById('profile-screen').style.display = 'none';
             document.getElementById('login-animation').style.display = 'flex';
             setTimeout(() => {
@@ -199,15 +204,14 @@
             hero.style.display = 'flex';
             document.getElementById('gallery-screen').style.display = 'block';
             
-            // Build Personal Row
             document.getElementById('row-personal').innerHTML = personalMemories.map((m, i) => `
-                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=1"></div>
+                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}"></div>
             `).join('');
 
-            // Build Filler Rows
             document.getElementById('row-nature').innerHTML = natureMovies.map(m => `
                 <div class="movie-card"><img src="${m.thumb}"></div>
             `).join('');
+            
             document.getElementById('row-motherly').innerHTML = motherlyMovies.map(m => `
                 <div class="movie-card"><img src="${m.thumb}"></div>
             `).join('');
@@ -228,13 +232,12 @@
             document.getElementById('main-player').pause();
         }
 
-        // Change nav color on scroll
         window.onscroll = function() {
             const nav = document.getElementById('main-nav');
             if (window.pageYOffset > 50) {
                 nav.style.background = "#141414";
             } else {
-                nav.style.background = "linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, transparent)";
+                nav.style.background = "linear-gradient(to bottom, rgba(0,0,0,0.8) 10%, transparent)";
             }
         };
     </script>
