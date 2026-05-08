@@ -36,12 +36,11 @@
         .btn-play { background: white; color: black; }
         .btn-info { background: rgba(109, 109, 110, 0.7); color: white; }
 
-        /* SCROLLABLE ROWS WITH ARROWS */
+        /* SCROLLABLE ROWS */
         #gallery-screen { display: none; margin-top: -120px; position: relative; z-index: 20; padding-bottom: 100px; }
         .row { position: relative; padding: 0 4%; margin-bottom: 40px; }
         .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
         .row-wrapper { position: relative; display: flex; align-items: center; }
-
         .row-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; scroll-behavior: smooth; }
         .row-scroll::-webkit-scrollbar { display: none; }
 
@@ -106,22 +105,22 @@
                 <button class="handle right-handle" onclick="scrollRow('row-personal', 1)">&#10095;</button>
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="row-title">Motherly Movies & Nature</div>
+            <div class="row-title">Family Favorites</div>
             <div class="row-wrapper">
-                <button class="handle left-handle" onclick="scrollRow('row-filler', -1)">&#10094;</button>
-                <div id="row-filler" class="row-scroll"></div>
-                <button class="handle right-handle" onclick="scrollRow('row-filler', 1)">&#10095;</button>
+                <button class="handle left-handle" onclick="scrollRow('row-xpics-1', -1)">&#10094;</button>
+                <div id="row-xpics-1" class="row-scroll"></div>
+                <button class="handle right-handle" onclick="scrollRow('row-xpics-1', 1)">&#10095;</button>
             </div>
         </div>
 
         <div class="row">
-            <div class="row-title">Mom's Photo Gallery</div>
+            <div class="row-title">More Memories</div>
             <div class="row-wrapper">
-                <button class="handle left-handle" onclick="scrollRow('row-xpics', -1)">&#10094;</button>
-                <div id="row-xpics" class="row-scroll"></div>
-                <button class="handle right-handle" onclick="scrollRow('row-xpics', 1)">&#10095;</button>
+                <button class="handle left-handle" onclick="scrollRow('row-xpics-2', -1)">&#10094;</button>
+                <div id="row-xpics-2" class="row-scroll"></div>
+                <button class="handle right-handle" onclick="scrollRow('row-xpics-2', 1)">&#10095;</button>
             </div>
         </div>
     </div>
@@ -138,40 +137,11 @@
     </div>
 
     <script>
-        const TOTAL_XPICS = 10; 
-
         const personalMemories = [
-            { 
-                title: "Where Motherhood Began", 
-                desc: "This is where it all started—the birth of Alan. The beginning of a lifelong journey and a love that knows no bounds.", 
-                file: "video1.mp4", 
-                thumb: "pic1.jpg" 
-            },
-            { 
-                title: "The Family Grows", 
-                desc: "Our family expanded and we welcomed Aiden into the world! We all love Aiden so much, and life became even brighter with him here.", 
-                file: "video2.mp4", 
-                thumb: "pic2.jpg" 
-            },
-            { 
-                title: "Zen Joins the Pack", 
-                desc: "Four paws and a heart of gold! Adding Zen to our family brought so much energy and joy to our home. He's been the perfect addition.", 
-                file: "video3.mp4", 
-                thumb: "pic3.jpg" 
-            },
-            { 
-                title: "To Many More Memories", 
-                desc: "Here is to a lifetime of laughter, adventures, and love. Thank you for being such an awesome mother—we can't wait to make many more memories with you!", 
-                file: "video4.mp4", 
-                thumb: "pic4.jpg" 
-            }
-        ];
-
-        const fillerMovies = [
-            { thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500" },
-            { thumb: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500" },
-            { thumb: "https://images.unsplash.com/photo-1591035897819-f4bdf739f446?w=500" },
-            { thumb: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=500" }
+            { title: "Where Motherhood Began", desc: "The birth of Alan. The start of it all.", file: "video1.mp4", thumb: "pic1.jpg" },
+            { title: "The Family Grows", desc: "Welcoming Aiden! We all love him so much.", file: "video2.mp4", thumb: "pic2.jpg" },
+            { title: "Zen Joins the Pack", desc: "Four paws and a heart of gold! Adding Zen brought so much joy.", file: "video3.mp4", thumb: "pic3.jpg" },
+            { title: "To Many More Memories", desc: "Thank you for being such an awesome mother.", file: "video4.mp4", thumb: "pic4.jpg" }
         ];
 
         function startLogin() {
@@ -191,19 +161,24 @@
             hero.style.display = 'flex';
             document.getElementById('gallery-screen').style.display = 'block';
             
+            // Videos
             document.getElementById('row-personal').innerHTML = personalMemories.map((m, i) => `
-                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=7"></div>
+                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=9"></div>
             `).join('');
 
-            document.getElementById('row-filler').innerHTML = fillerMovies.map(m => `
-                <div class="movie-card"><img src="${m.thumb}"></div>
-            `).join('');
-
-            let xPicHTML = "";
-            for (let i = 1; i <= TOTAL_XPICS; i++) {
-                xPicHTML += `<div class="movie-card"><img src="./xpic${i}.jpg?v=7"></div>`;
+            // Photo Row 1 (1-10)
+            let xPicHTML1 = "";
+            for (let i = 1; i <= 10; i++) {
+                xPicHTML1 += `<div class="movie-card"><img src="./xpic${i}.jpg?v=9"></div>`;
             }
-            document.getElementById('row-xpics').innerHTML = xPicHTML;
+            document.getElementById('row-xpics-1').innerHTML = xPicHTML1;
+
+            // Photo Row 2 (11-20)
+            let xPicHTML2 = "";
+            for (let i = 11; i <= 20; i++) {
+                xPicHTML2 += `<div class="movie-card"><img src="./xpic${i}.jpg?v=9"></div>`;
+            }
+            document.getElementById('row-xpics-2').innerHTML = xPicHTML2;
         }
 
         function scrollRow(rowId, direction) {
@@ -219,7 +194,7 @@
         function openVideo(i) {
             const m = personalMemories[i];
             const player = document.getElementById('main-player');
-            player.src = m.file + "?v=7";
+            player.src = m.file + "?v=9";
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block';
