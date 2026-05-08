@@ -31,21 +31,53 @@
         .hero-content { z-index: 10; max-width: 650px; }
         .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
         .hero-desc { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.4; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
-        
         .hero-btns { display: flex; gap: 15px; }
         .btn { padding: 12px 30px; border-radius: 4px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         .btn-play { background: white; color: black; }
         .btn-info { background: rgba(109, 109, 110, 0.7); color: white; }
 
-        /* ROWS */
+        /* SCROLLABLE ROWS WITH ARROWS */
         #gallery-screen { display: none; margin-top: -120px; position: relative; z-index: 20; padding-bottom: 100px; }
-        .row { padding-left: 4%; margin-bottom: 40px; }
+        .row { position: relative; padding: 0 4%; margin-bottom: 40px; }
         .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
-        .row-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; }
+
+        .row-wrapper { position: relative; display: flex; align-items: center; }
+
+        .row-scroll { 
+            display: flex; 
+            gap: 10px; 
+            overflow-x: auto; 
+            padding: 20px 0; 
+            scrollbar-width: none; 
+            scroll-behavior: smooth;
+        }
         .row-scroll::-webkit-scrollbar { display: none; }
+
         .movie-card { min-width: 300px; aspect-ratio: 16/9; background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: transform 0.4s; overflow: hidden; }
         .movie-card:hover { transform: scale(1.1); z-index: 100; }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ARROWS */
+        .handle {
+            position: absolute;
+            top: 20px; bottom: 20px;
+            width: 4%;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s, background 0.3s;
+            border: none;
+        }
+        .row:hover .handle { opacity: 1; }
+        .handle:hover { background: rgba(0,0,0,0.8); font-size: 2.5rem; }
+        .left-handle { left: 0; border-radius: 0 4px 4px 0; }
+        .right-handle { right: 0; border-radius: 4px 0 0 4px; }
 
         /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 6000; }
@@ -91,11 +123,29 @@
     <div id="gallery-screen">
         <div class="row">
             <div class="row-title">Our Shared Journey</div>
-            <div id="row-personal" class="row-scroll"></div>
+            <div class="row-wrapper">
+                <button class="handle left-handle" onclick="scrollRow('row-personal', -1)">&#10094;</button>
+                <div id="row-personal" class="row-scroll"></div>
+                <button class="handle right-handle" onclick="scrollRow('row-personal', 1)">&#10095;</button>
+            </div>
         </div>
+        
         <div class="row">
             <div class="row-title">Motherly Movies & Nature</div>
-            <div id="row-filler" class="row-scroll"></div>
+            <div class="row-wrapper">
+                <button class="handle left-handle" onclick="scrollRow('row-filler', -1)">&#10094;</button>
+                <div id="row-filler" class="row-scroll"></div>
+                <button class="handle right-handle" onclick="scrollRow('row-filler', 1)">&#10095;</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="row-title">Mom's Photo Gallery</div>
+            <div class="row-wrapper">
+                <button class="handle left-handle" onclick="scrollRow('row-xpics', -1)">&#10094;</button>
+                <div id="row-xpics" class="row-scroll"></div>
+                <button class="handle right-handle" onclick="scrollRow('row-xpics', 1)">&#10095;</button>
+            </div>
         </div>
     </div>
 
@@ -111,26 +161,21 @@
     </div>
 
     <script>
+        const TOTAL_XPICS = 8; // Update this to match your uploads
+
         const personalMemories = [
-            { 
-                title: "Where Motherhood Began", 
-                desc: "This is where it all started—the birth of Alan. The beginning of a lifelong journey and a love that knows no bounds.", 
-                file: "video1.mp4", 
-                thumb: "pic1.jpg" 
-            },
-            { 
-                title: "The Family Grows", 
-                desc: "Our family expanded and we welcomed Aiden into the world! We all love Aiden so much, and life became even brighter with him here.", 
-                file: "video2.mp4", 
-                thumb: "pic2.jpg" 
-            }
+            { title: "Where Motherhood Began", desc: "The birth of Alan. The start of it all.", file: "video1.mp4", thumb: "pic1.jpg" },
+            { title: "The Family Grows", desc: "Welcoming Aiden! We all love him so much.", file: "video2.mp4", thumb: "pic2.jpg" },
+            { title: "West Point Visit", desc: "A proud day together.", file: "video3.mp4", thumb: "pic3.jpg" },
+            { title: "Holiday Magic", desc: "Christmas at home.", file: "video4.mp4", thumb: "pic4.jpg" }
         ];
 
         const fillerMovies = [
             { thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500" },
             { thumb: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500" },
             { thumb: "https://images.unsplash.com/photo-1591035897819-f4bdf739f446?w=500" },
-            { thumb: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=500" }
+            { thumb: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=500" },
+            { thumb: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500" }
         ];
 
         function startLogin() {
@@ -151,15 +196,27 @@
             document.getElementById('gallery-screen').style.display = 'block';
             
             document.getElementById('row-personal').innerHTML = personalMemories.map((m, i) => `
-                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=4"></div>
+                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=6"></div>
             `).join('');
 
             document.getElementById('row-filler').innerHTML = fillerMovies.map(m => `
                 <div class="movie-card"><img src="${m.thumb}"></div>
             `).join('');
+
+            let xPicHTML = "";
+            for (let i = 1; i <= TOTAL_XPICS; i++) {
+                xPicHTML += `<div class="movie-card"><img src="./xpic${i}.jpg?v=6"></div>`;
+            }
+            document.getElementById('row-xpics').innerHTML = xPicHTML;
         }
 
-        // BIRTHDAY MESSAGE FUNCTION
+        // SCROLL FUNCTION
+        function scrollRow(rowId, direction) {
+            const row = document.getElementById(rowId);
+            const scrollAmount = row.clientWidth * 0.8; // Scroll 80% of the screen width
+            row.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+        }
+
         function showBirthdayMessage() {
             alert("Happy Birthday mama! We love you soooo much. Enjoy this netflix memory lane!");
         }
@@ -167,7 +224,7 @@
         function openVideo(i) {
             const m = personalMemories[i];
             const player = document.getElementById('main-player');
-            player.src = m.file + "?v=4";
+            player.src = m.file + "?v=6";
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block';
