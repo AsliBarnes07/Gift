@@ -5,36 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix Memories</title>
     <style>
-        :root { 
-            --netflix-red: #E50914; 
-            --bg-color: #141414; 
-            --text-color: #fff; 
-        }
-
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-color); 
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-            margin: 0; 
-            overflow-x: hidden;
-        }
+        :root { --netflix-red: #E50914; --bg-color: #141414; --text-color: #fff; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; overflow-x: hidden; }
 
         /* NAVIGATION */
-        #main-nav {
-            position: fixed;
-            top: 0; width: 100%; height: 70px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 10%, transparent);
-            display: flex; align-items: center; padding: 0 4%;
-            z-index: 1000; transition: background 0.5s;
-        }
-        .nav-logo { color: var(--netflix-red); font-size: 1.8rem; font-weight: bold; margin-right: 25px; cursor: pointer; text-transform: uppercase; }
-        .nav-links { display: flex; gap: 20px; font-size: 0.9rem; color: #e5e5e5; list-style: none; padding: 0; }
+        #main-nav { position: fixed; top: 0; width: 100%; height: 70px; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 10%, transparent); display: flex; align-items: center; padding: 0 4%; z-index: 1000; transition: background 0.5s; }
+        .nav-logo { color: var(--netflix-red); font-size: 1.8rem; font-weight: bold; margin-right: 25px; text-transform: uppercase; cursor: pointer; }
 
         /* PROFILE SCREEN */
-        #profile-screen {
-            display: flex; text-align: center; height: 100vh;
-            flex-direction: column; justify-content: center; align-items: center;
-        }
+        #profile-screen { display: flex; text-align: center; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
         .profile-container { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
         .profile { cursor: pointer; width: 150px; text-align: center; }
         .profile img { width: 100%; aspect-ratio: 1/1; border-radius: 4px; transition: 0.2s; border: 3px solid transparent; }
@@ -42,33 +21,19 @@
         .profile p { color: #808080; margin-top: 10px; font-size: 1.2rem; }
 
         /* TRANSITION */
-        #login-animation {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 5000; justify-content: center; align-items: center;
-        }
+        #login-animation { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 5000; justify-content: center; align-items: center; }
         .n-logo { width: 150px; animation: zoomAndFade 2.5s forwards; }
         @keyframes zoomAndFade { 0% { transform: scale(1); } 100% { transform: scale(4); opacity: 0; } }
 
         /* BILLBOARD (HERO) */
-        #hero-section {
-            height: 85vh; position: relative;
-            background-size: cover; background-position: center;
-            display: none; align-items: center; padding: 0 4%;
-        }
-        #hero-section::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 35%;
-            background: linear-gradient(to top, var(--bg-color), transparent);
-        }
+        #hero-section { height: 85vh; position: relative; background-size: cover; background-position: center; display: none; align-items: center; padding: 0 4%; }
+        #hero-section::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, var(--bg-color), transparent); }
         .hero-content { z-index: 10; max-width: 650px; }
         .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
         .hero-desc { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.4; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
         .hero-btns { display: flex; gap: 15px; }
-        .btn {
-            padding: 12px 30px; border-radius: 4px; font-weight: bold; font-size: 1.1rem;
-            border: none; cursor: pointer; display: flex; align-items: center; gap: 10px;
-        }
+        .btn { padding: 12px 30px; border-radius: 4px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         .btn-play { background: white; color: black; }
-        .btn-play:hover { background: #e6e6e6; }
         .btn-info { background: rgba(109, 109, 110, 0.7); color: white; }
 
         /* ROWS */
@@ -77,10 +42,7 @@
         .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
         .row-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; }
         .row-scroll::-webkit-scrollbar { display: none; }
-        .movie-card {
-            min-width: 300px; aspect-ratio: 16/9; background: #2f2f2f;
-            border-radius: 4px; cursor: pointer; transition: transform 0.4s; overflow: hidden;
-        }
+        .movie-card { min-width: 300px; aspect-ratio: 16/9; background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: transform 0.4s; overflow: hidden; }
         .movie-card:hover { transform: scale(1.1); z-index: 100; }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -98,12 +60,6 @@
 
     <nav id="main-nav" style="display:none;">
         <div class="nav-logo">Memories</div>
-        <ul class="nav-links">
-            <li>Home</li>
-            <li>Family</li>
-            <li>Nature</li>
-            <li>New & Popular</li>
-        </ul>
     </nav>
 
     <div id="profile-screen">
@@ -123,10 +79,10 @@
     <div id="hero-section">
         <div class="hero-content">
             <div class="hero-title">Barnes Family Memories</div>
-            <div class="hero-desc">From the very first day Alan was born to our latest adventures. A special collection curated for the woman who made it all possible.</div>
+            <div class="hero-desc">Experience the journey that started it all. Dedicating this collection to the woman who gave us everything.</div>
             <div class="hero-btns">
                 <button class="btn btn-play" onclick="openVideo(0)">▶ Play</button>
-                <button class="btn btn-info" onclick="alert('Everything in this collection is made with love by Alan.')">ⓘ More Info</button>
+                <button class="btn btn-info">ⓘ More Info</button>
             </div>
         </div>
     </div>
@@ -137,12 +93,8 @@
             <div id="row-personal" class="row-scroll"></div>
         </div>
         <div class="row">
-            <div class="row-title">Mom's Nature Escapes</div>
-            <div id="row-nature" class="row-scroll"></div>
-        </div>
-        <div class="row">
-            <div class="row-title">Because You're The Best Mom</div>
-            <div id="row-motherly" class="row-scroll"></div>
+            <div class="row-title">Motherly Movies & Nature</div>
+            <div id="row-filler" class="row-scroll"></div>
         </div>
     </div>
 
@@ -158,6 +110,7 @@
     </div>
 
     <script>
+        // THE DATA (Update version v=2 to force browser refresh)
         const personalMemories = [
             { 
                 title: "Where Motherhood Began", 
@@ -166,25 +119,18 @@
                 thumb: "pic1.jpg" 
             },
             { 
-                title: "Memory 2", 
-                desc: "Capturing more of our favorite family moments together.", 
+                title: "Family Moments", 
+                desc: "Capturing the laughter and the times we spend together.", 
                 file: "video2.mp4", 
                 thumb: "pic2.jpg" 
             }
         ];
 
-        const natureMovies = [
-            { title: "Deep Forest", thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=500&q=60" },
-            { title: "Serene Waves", thumb: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=60" },
-            { title: "Peak Silence", thumb: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=500&q=60" },
-            { title: "Golden Desert", thumb: "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=500&q=60" }
-        ];
-
-        const motherlyMovies = [
-            { title: "Kindness", thumb: "https://images.unsplash.com/photo-1591035897819-f4bdf739f446?auto=format&fit=crop&w=500&q=60" },
-            { title: "The Dinner Table", thumb: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?auto=format&fit=crop&w=500&q=60" },
-            { title: "Heritage", thumb: "https://images.unsplash.com/photo-1536640712247-3a97c2c29410?auto=format&fit=crop&w=500&q=60" },
-            { title: "First Steps", thumb: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=500&q=60" }
+        const fillerMovies = [
+            { thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500" },
+            { thumb: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500" },
+            { thumb: "https://images.unsplash.com/photo-1591035897819-f4bdf739f446?w=500" },
+            { thumb: "https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=500" }
         ];
 
         function startLogin() {
@@ -204,15 +150,12 @@
             hero.style.display = 'flex';
             document.getElementById('gallery-screen').style.display = 'block';
             
+            // Versioning '?v=2' ensures the latest text/images are fetched
             document.getElementById('row-personal').innerHTML = personalMemories.map((m, i) => `
-                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}"></div>
+                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=2"></div>
             `).join('');
 
-            document.getElementById('row-nature').innerHTML = natureMovies.map(m => `
-                <div class="movie-card"><img src="${m.thumb}"></div>
-            `).join('');
-            
-            document.getElementById('row-motherly').innerHTML = motherlyMovies.map(m => `
+            document.getElementById('row-filler').innerHTML = fillerMovies.map(m => `
                 <div class="movie-card"><img src="${m.thumb}"></div>
             `).join('');
         }
@@ -220,7 +163,7 @@
         function openVideo(i) {
             const m = personalMemories[i];
             const player = document.getElementById('main-player');
-            player.src = m.file;
+            player.src = m.file + "?v=2";
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block';
@@ -231,15 +174,6 @@
             document.getElementById('video-modal').style.display = 'none';
             document.getElementById('main-player').pause();
         }
-
-        window.onscroll = function() {
-            const nav = document.getElementById('main-nav');
-            if (window.pageYOffset > 50) {
-                nav.style.background = "#141414";
-            } else {
-                nav.style.background = "linear-gradient(to bottom, rgba(0,0,0,0.8) 10%, transparent)";
-            }
-        };
     </script>
 </body>
 </html>
