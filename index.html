@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Memories</title>
+    <style>
+        :root { 
+            --netflix-red: #E50914; 
+            --bg-color: #141414; 
+            --text-color: #fff; 
+            --gray: #808080;
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* INTRO ANIMATION */
+        #intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .netflix-logo {
+            width: 300px;
+            max-width: 80%;
+            animation: zoomOut 3.5s forwards;
+        }
+
+        @keyframes zoomOut {
+            0% { transform: scale(1); opacity: 1; }
+            80% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; visibility: hidden; }
+        }
+
+        /* PROFILE SCREEN */
+        #profile-screen {
+            display: none; /* Shown after intro */
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 { font-size: 3.5rem; font-weight: 500; margin-bottom: 30px; }
+
+        .profile-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+
+        .profile { cursor: pointer; width: 150px; text-align: center; }
+        .profile img { 
+            width: 100%; aspect-ratio: 1/1; object-fit: cover;
+            border-radius: 4px; transition: 0.2s; border: 3px solid transparent; 
+        }
+        .profile:hover img { transform: scale(1.05); border: 3px solid white; }
+        .profile p { color: var(--gray); margin-top: 10px; font-size: 1.2rem; }
+        .profile:hover p { color: white; }
+
+        /* MAIN GALLERY (Mobile Optimized) */
+        #gallery-screen { display: none; padding: 20px 4%; }
+        .logo { color: var(--netflix-red); font-size: 2rem; font-weight: bold; margin-bottom: 20px; }
+        
+        .row-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .profile { width: 120px; }
+            .row-container { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+        }
+
+        .movie-card {
+            background: #2f2f2f;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: hidden;
+            position: relative;
+        }
+        .movie-card:hover { transform: scale(1.05); z-index: 5; }
+        .movie-card img { width: 100%; height: auto; display: block; }
+        .card-info { padding: 10px; font-size: 0.9rem; }
+
+        /* MODAL (Video & Details) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 100;
+            overflow-y: auto;
+            padding: 40px 0;
+        }
+        .modal-content { 
+            width: 90%; max-width: 800px; margin: auto; 
+            background: #181818; border-radius: 8px; overflow: hidden;
+        }
+        .modal-body { padding: 20px; }
+        .modal-title { font-size: 2rem; margin-bottom: 10px; }
+        .modal-desc { color: #ccc; line-height: 1.5; margin-bottom: 20px; }
+        video { width: 100%; display: block; }
+        .close-btn {
+            position: absolute; top: 15px; right: 25px;
+            color: white; font-size: 3rem; cursor: pointer; z-index: 101;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-screen">
+        <img class="netflix-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
+        <audio id="tudum-sound" src="https://www.myinstants.com/media/sounds/tudum.mp3"></audio>
+    </div>
+
+    <div id="profile-screen">
+        <h1>Who's watching?</h1>
+        <div class="profile-container">
+            <div class="profile" onclick="alert('Access Restricted')"><img src="alan.jpg"><p>Alan</p></div>
+            <div class="profile" onclick="alert('Access Restricted')"><img src="aiden.jpg"><p>Aiden</p></div>
+            <div class="profile" onclick="showGallery()"><img src="mom.jpg"><p>Mom</p></div>
+            <div class="profile" onclick="alert('Access Restricted')"><img src="dad.jpg"><p>Dad</p></div>
+        </div>
+    </div>
+
+    <div id="gallery-screen">
+        <div class="logo">MEMORIES</div>
+        <h2 style="margin-bottom: 20px;">Shared Moments</h2>
+        <div id="movie-grid" class="row-container"></div>
+    </div>
+
+    <div id="video-modal" class="modal">
+        <span class="close-btn" onclick="closeVideo()">&times;</span>
+        <div class="modal-content">
+            <video id="main-player" controls autoplay></video>
+            <div class="modal-body">
+                <div id="modal-title" class="modal-title"></div>
+                <div id="modal-desc" class="modal-desc"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATA CONFIGURATION: Add your titles and descriptions here!
+        const memoryData = [
+            { title: "Family Vacation", desc: "A wonderful trip we took together in the summer.", file: "video1.mp4", thumb: "pic1.jpg" },
+            { title: "Graduation Prep", desc: "Getting ready for the big day at West Point.", file: "video2.mp4", thumb: "pic2.jpg" },
+            { title: "The Weekend Bash", desc: "Just some quality time laughing and hanging out.", file: "video3.mp4", thumb: "pic3.jpg" },
+            { title: "Birthday Surprise", desc: "That one time we actually managed to keep a secret!", file: "video4.mp4", thumb: "pic4.jpg" }
+        ];
+
+        // Handle Intro
+        window.onload = () => {
+            const sound = document.getElementById('tudum-sound');
+            sound.play().catch(() => console.log("Sound requires user interaction"));
+            
+            setTimeout(() => {
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('profile-screen').style.display = 'flex';
+            }, 3500);
+        };
+
+        function showGallery() {
+            document.getElementById('profile-screen').style.display = 'none';
+            document.getElementById('gallery-screen').style.display = 'block';
+            renderCards();
+        }
+
+        function renderCards() {
+            const grid = document.getElementById('movie-grid');
+            grid.innerHTML = memoryData.map((m, index) => `
+                <div class="movie-card" onclick="openVideo(${index})">
+                    <img src="${m.thumb}" alt="${m.title}">
+                    <div class="card-info"><b>${m.title}</b></div>
+                </div>
+            `).join('');
+        }
+
+        function openVideo(index) {
+            const m = memoryData[index];
+            document.getElementById('main-player').src = m.file;
+            document.getElementById('modal-title').innerText = m.title;
+            document.getElementById('modal-desc').innerText = m.desc;
+            document.getElementById('video-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Stop scrolling
+        }
+
+        function closeVideo() {
+            document.getElementById('video-modal').style.display = 'none';
+            document.getElementById('main-player').pause();
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+        }
+    </script>
+</body>
+</html>
