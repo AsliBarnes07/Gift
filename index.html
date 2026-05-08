@@ -31,6 +31,7 @@
         .hero-content { z-index: 10; max-width: 650px; }
         .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
         .hero-desc { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.4; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
+        
         .hero-btns { display: flex; gap: 15px; }
         .btn { padding: 12px 30px; border-radius: 4px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         .btn-play { background: white; color: black; }
@@ -82,7 +83,7 @@
             <div class="hero-desc">Experience the journey that started it all. Dedicating this collection to the woman who gave us everything.</div>
             <div class="hero-btns">
                 <button class="btn btn-play" onclick="openVideo(0)">▶ Play</button>
-                <button class="btn btn-info">ⓘ More Info</button>
+                <button class="btn btn-info" onclick="showBirthdayMessage()">ⓘ More Info</button>
             </div>
         </div>
     </div>
@@ -149,9 +150,8 @@
             hero.style.display = 'flex';
             document.getElementById('gallery-screen').style.display = 'block';
             
-            // Added ?v=3 to force cache refresh
             document.getElementById('row-personal').innerHTML = personalMemories.map((m, i) => `
-                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=3"></div>
+                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=4"></div>
             `).join('');
 
             document.getElementById('row-filler').innerHTML = fillerMovies.map(m => `
@@ -159,10 +159,15 @@
             `).join('');
         }
 
+        // BIRTHDAY MESSAGE FUNCTION
+        function showBirthdayMessage() {
+            alert("Happy Birthday mama! We love you soooo much. Enjoy this netflix memory lane!");
+        }
+
         function openVideo(i) {
             const m = personalMemories[i];
             const player = document.getElementById('main-player');
-            player.src = m.file + "?v=3";
+            player.src = m.file + "?v=4";
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block';
