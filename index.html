@@ -9,10 +9,10 @@
         body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; overflow-x: hidden; }
 
         /* NAVIGATION */
-        #main-nav { position: fixed; top: 0; width: 100%; height: 70px; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 10%, transparent); display: flex; align-items: center; padding: 0 4%; z-index: 1000; transition: background 0.5s; }
-        .nav-logo { color: var(--netflix-red); font-size: 1.8rem; font-weight: bold; margin-right: 25px; text-transform: uppercase; cursor: pointer; }
+        #main-nav { position: fixed; top: 0; width: 100%; height: 70px; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 10%, transparent); display: flex; align-items: center; padding: 0 4%; z-index: 1000; }
+        .nav-logo { color: var(--netflix-red); font-size: 1.8rem; font-weight: bold; text-transform: uppercase; }
 
-        /* PROFILE SCREEN */
+        /* PROFILES */
         #profile-screen { display: flex; text-align: center; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
         .profile-container { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
         .profile { cursor: pointer; width: 150px; text-align: center; }
@@ -25,40 +25,37 @@
         .n-logo { width: 150px; animation: zoomAndFade 2.5s forwards; }
         @keyframes zoomAndFade { 0% { transform: scale(1); } 100% { transform: scale(4); opacity: 0; } }
 
-        /* BILLBOARD (HERO) */
+        /* HERO */
         #hero-section { height: 85vh; position: relative; background-size: cover; background-position: center; display: none; align-items: center; padding: 0 4%; }
         #hero-section::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, var(--bg-color), transparent); }
         .hero-content { z-index: 10; max-width: 650px; }
-        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
-        .hero-desc { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.4; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
-        .hero-btns { display: flex; gap: 15px; }
-        .btn { padding: 12px 30px; border-radius: 4px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: bold; margin-bottom: 10px; }
+        .hero-desc { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.4; }
+        .btn { padding: 12px 30px; border-radius: 4px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; }
         .btn-play { background: white; color: black; }
-        .btn-info { background: rgba(109, 109, 110, 0.7); color: white; }
+        .btn-info { background: rgba(109, 109, 110, 0.7); color: white; margin-left: 10px; }
 
-        /* SCROLLABLE ROWS */
+        /* ROWS */
         #gallery-screen { display: none; margin-top: -120px; position: relative; z-index: 20; padding-bottom: 100px; }
         .row { position: relative; padding: 0 4%; margin-bottom: 40px; }
         .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
         .row-wrapper { position: relative; display: flex; align-items: center; }
-        .row-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; scroll-behavior: smooth; }
+        .row-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; scroll-behavior: smooth; width: 100%; }
         .row-scroll::-webkit-scrollbar { display: none; }
-
-        .movie-card { min-width: 300px; aspect-ratio: 16/9; background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: transform 0.4s; overflow: hidden; }
+        .movie-card { min-width: 300px; aspect-ratio: 16/9; background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: transform 0.4s; overflow: hidden; flex-shrink: 0; }
         .movie-card:hover { transform: scale(1.1); z-index: 100; }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; }
 
         /* ARROWS */
-        .handle { position: absolute; top: 20px; bottom: 20px; width: 4%; background: rgba(0,0,0,0.5); color: white; display: flex; justify-content: center; align-items: center; font-size: 2rem; cursor: pointer; z-index: 1000; opacity: 0; transition: opacity 0.3s, background 0.3s; border: none; }
+        .handle { position: absolute; top: 20px; bottom: 20px; width: 4%; background: rgba(0,0,0,0.5); color: white; display: flex; justify-content: center; align-items: center; font-size: 2rem; cursor: pointer; z-index: 1000; opacity: 0; transition: 0.3s; border: none; }
         .row:hover .handle { opacity: 1; }
-        .handle:hover { background: rgba(0,0,0,0.8); font-size: 2.5rem; }
         .left-handle { left: 0; border-radius: 0 4px 4px 0; }
         .right-handle { right: 0; border-radius: 4px 0 0 4px; }
 
         /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 6000; }
-        .modal-content { width: 90%; max-width: 850px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; overflow: hidden; }
-        video { width: 100%; background: #000; }
+        .modal-content { width: 90%; max-width: 850px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; }
+        video, #modal-img { width: 100%; display: none; }
         .modal-body { padding: 30px; }
         .close-btn { position: absolute; top: 15px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 6001; }
     </style>
@@ -66,10 +63,6 @@
 <body>
 
     <audio id="tudum-sound" src="https://www.myinstants.com/media/sounds/tudum.mp3"></audio>
-
-    <nav id="main-nav" style="display:none;">
-        <div class="nav-logo">Memories</div>
-    </nav>
 
     <div id="profile-screen">
         <h1>Who's watching?</h1>
@@ -85,42 +78,48 @@
         <img class="n-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
     </div>
 
-    <div id="hero-section">
-        <div class="hero-content">
-            <div class="hero-title">Barnes Family Memories</div>
-            <div class="hero-desc">Experience the journey that started it all. Dedicating this collection to the woman who gave us everything.</div>
-            <div class="hero-btns">
-                <button class="btn btn-play" onclick="openVideo(0)">▶ Play</button>
-                <button class="btn btn-info" onclick="showBirthdayMessage()">ⓘ More Info</button>
-            </div>
-        </div>
-    </div>
+    <div id="main-content" style="display:none;">
+        <nav id="main-nav">
+            <div class="nav-logo">Memories</div>
+        </nav>
 
-    <div id="gallery-screen">
-        <div class="row">
-            <div class="row-title">Our Shared Journey</div>
-            <div class="row-wrapper">
-                <button class="handle left-handle" onclick="scrollRow('row-personal', -1)">&#10094;</button>
-                <div id="row-personal" class="row-scroll"></div>
-                <button class="handle right-handle" onclick="scrollRow('row-personal', 1)">&#10095;</button>
+        <div id="hero-section">
+            <div class="hero-content">
+                <div class="hero-title">Barnes Family Memories</div>
+                <div class="hero-desc">Experience the journey that started it all. Dedicating this collection to the woman who gave us everything.</div>
+                <div class="hero-btns">
+                    <button class="btn btn-play" onclick="openVideo(0)">▶ Play</button>
+                    <button class="btn btn-info" onclick="showBirthdayMessage()">ⓘ More Info</button>
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="row-title">Family Favorites</div>
-            <div class="row-wrapper">
-                <button class="handle left-handle" onclick="scrollRow('row-xpics-1', -1)">&#10094;</button>
-                <div id="row-xpics-1" class="row-scroll"></div>
-                <button class="handle right-handle" onclick="scrollRow('row-xpics-1', 1)">&#10095;</button>
+        <div id="gallery-screen">
+            <div class="row">
+                <div class="row-title">Our Shared Journey</div>
+                <div class="row-wrapper">
+                    <button class="handle left-handle" onclick="scrollRow('row-videos', -1)">&#10094;</button>
+                    <div id="row-videos" class="row-scroll"></div>
+                    <button class="handle right-handle" onclick="scrollRow('row-videos', 1)">&#10095;</button>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="row-title">More Memories</div>
-            <div class="row-wrapper">
-                <button class="handle left-handle" onclick="scrollRow('row-xpics-2', -1)">&#10094;</button>
-                <div id="row-xpics-2" class="row-scroll"></div>
-                <button class="handle right-handle" onclick="scrollRow('row-xpics-2', 1)">&#10095;</button>
+            <div class="row">
+                <div class="row-title">Family Favorites</div>
+                <div class="row-wrapper">
+                    <button class="handle left-handle" onclick="scrollRow('row-photos-1', -1)">&#10094;</button>
+                    <div id="row-photos-1" class="row-scroll"></div>
+                    <button class="handle right-handle" onclick="scrollRow('row-photos-1', 1)">&#10095;</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="row-title">More Memories</div>
+                <div class="row-wrapper">
+                    <button class="handle left-handle" onclick="scrollRow('row-photos-2', -1)">&#10094;</button>
+                    <div id="row-photos-2" class="row-scroll"></div>
+                    <button class="handle right-handle" onclick="scrollRow('row-photos-2', 1)">&#10095;</button>
+                </div>
             </div>
         </div>
     </div>
@@ -129,9 +128,10 @@
         <span class="close-btn" onclick="closeVideo()">&times;</span>
         <div class="modal-content">
             <video id="main-player" controls></video>
+            <img id="modal-img" src="">
             <div class="modal-body">
-                <h2 id="modal-title" style="margin:0;"></h2>
-                <p id="modal-desc" style="color:#a3a3a3; margin-top:10px; font-size: 1.1rem;"></p>
+                <h2 id="modal-title"></h2>
+                <p id="modal-desc" style="color:#a3a3a3;"></p>
             </div>
         </div>
     </div>
@@ -140,7 +140,7 @@
         const personalMemories = [
             { title: "Where Motherhood Began", desc: "The birth of Alan. The start of it all.", file: "video1.mp4", thumb: "pic1.jpg" },
             { title: "The Family Grows", desc: "Welcoming Aiden! We all love him so much.", file: "video2.mp4", thumb: "pic2.jpg" },
-            { title: "Zen Joins the Pack", desc: "Four paws and a heart of gold! Adding Zen brought so much joy.", file: "video3.mp4", thumb: "pic3.jpg" },
+            { title: "Zen Joins the Pack", desc: "Four paws and a heart of gold! Zen brought so much joy.", file: "video3.mp4", thumb: "pic3.jpg" },
             { title: "To Many More Memories", desc: "Thank you for being such an awesome mother.", file: "video4.mp4", thumb: "pic4.jpg" }
         ];
 
@@ -150,41 +150,39 @@
             document.getElementById('login-animation').style.display = 'flex';
             setTimeout(() => {
                 document.getElementById('login-animation').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
                 enterGallery();
             }, 2500);
         }
 
         function enterGallery() {
-            document.getElementById('main-nav').style.display = 'flex';
-            const hero = document.getElementById('hero-section');
-            hero.style.backgroundImage = "url('./background.jpg')";
-            hero.style.display = 'flex';
+            document.getElementById('hero-section').style.backgroundImage = "url('./background.jpg')";
+            document.getElementById('hero-section').style.display = 'flex';
             document.getElementById('gallery-screen').style.display = 'block';
             
             // Videos
-            document.getElementById('row-personal').innerHTML = personalMemories.map((m, i) => `
-                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=9"></div>
+            document.getElementById('row-videos').innerHTML = personalMemories.map((m, i) => `
+                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=11"></div>
             `).join('');
 
-            // Photo Row 1 (1-10)
-            let xPicHTML1 = "";
+            // Photo Row 1
+            let row1HTML = "";
             for (let i = 1; i <= 10; i++) {
-                xPicHTML1 += `<div class="movie-card"><img src="./xpic${i}.jpg?v=9"></div>`;
+                row1HTML += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=11"></div>`;
             }
-            document.getElementById('row-xpics-1').innerHTML = xPicHTML1;
+            document.getElementById('row-photos-1').innerHTML = row1HTML;
 
-            // Photo Row 2 (11-20)
-            let xPicHTML2 = "";
+            // Photo Row 2
+            let row2HTML = "";
             for (let i = 11; i <= 20; i++) {
-                xPicHTML2 += `<div class="movie-card"><img src="./xpic${i}.jpg?v=9"></div>`;
+                row2HTML += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=11"></div>`;
             }
-            document.getElementById('row-xpics-2').innerHTML = xPicHTML2;
+            document.getElementById('row-photos-2').innerHTML = row2HTML;
         }
 
-        function scrollRow(rowId, direction) {
-            const row = document.getElementById(rowId);
-            const scrollAmount = row.clientWidth * 0.8; 
-            row.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+        function scrollRow(id, dir) {
+            const el = document.getElementById(id);
+            el.scrollBy({ left: (el.clientWidth * 0.8) * dir, behavior: 'smooth' });
         }
 
         function showBirthdayMessage() {
@@ -193,12 +191,30 @@
 
         function openVideo(i) {
             const m = personalMemories[i];
-            const player = document.getElementById('main-player');
-            player.src = m.file + "?v=9";
+            const p = document.getElementById('main-player');
+            const img = document.getElementById('modal-img');
+            
+            img.style.display = 'none';
+            p.style.display = 'block';
+            p.src = m.file + "?v=11";
+            
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block';
-            player.play();
+            p.play();
+        }
+
+        function openPhoto(src) {
+            const p = document.getElementById('main-player');
+            const img = document.getElementById('modal-img');
+            
+            p.style.display = 'none';
+            img.style.display = 'block';
+            img.src = src + "?v=11";
+            
+            document.getElementById('modal-title').innerText = "Family Photo";
+            document.getElementById('modal-desc').innerText = "A captured moment in time.";
+            document.getElementById('video-modal').style.display = 'block';
         }
 
         function closeVideo() {
