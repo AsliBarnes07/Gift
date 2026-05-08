@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix Memories</title>
     <style>
-        :root { --netflix-red: #E50914; --bg-color: #141414; --text-color: #fff; }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; overflow-x: hidden; }
+        :root { --netflix-red: #E50914; --bg-color: #141414; --text-color: #fff; --gray: #808080; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
         /* NAVIGATION */
         #main-nav { position: fixed; top: 0; width: 100%; height: 70px; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 10%, transparent); display: flex; align-items: center; padding: 0 4%; z-index: 1000; }
@@ -18,7 +18,7 @@
         .profile { cursor: pointer; width: 150px; text-align: center; }
         .profile img { width: 100%; aspect-ratio: 1/1; border-radius: 4px; transition: 0.2s; border: 3px solid transparent; }
         .profile:hover img { transform: scale(1.05); border: 3px solid white; }
-        .profile p { color: #808080; margin-top: 10px; font-size: 1.2rem; }
+        .profile p { color: var(--gray); margin-top: 10px; font-size: 1.2rem; }
 
         /* TRANSITION */
         #login-animation { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 5000; justify-content: center; align-items: center; }
@@ -29,34 +29,63 @@
         #hero-section { height: 85vh; position: relative; background-size: cover; background-position: center; display: none; align-items: center; padding: 0 4%; }
         #hero-section::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background: linear-gradient(to top, var(--bg-color), transparent); }
         .hero-content { z-index: 10; max-width: 650px; }
-        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: bold; margin-bottom: 10px; }
-        .hero-desc { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.4; }
-        .btn { padding: 12px 30px; border-radius: 4px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .hero-desc { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.4; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
+        .hero-btns { display: flex; gap: 15px; }
+        .btn { padding: 12px 30px; border-radius: 4px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         .btn-play { background: white; color: black; }
-        .btn-info { background: rgba(109, 109, 110, 0.7); color: white; margin-left: 10px; }
+        .btn-play:hover { background: #e6e6e6; }
+        .btn-info { background: rgba(109, 109, 110, 0.7); color: white; }
 
-        /* ROWS */
+        /* ROWS (Netflix Carousel Layout Restored) */
         #gallery-screen { display: none; margin-top: -120px; position: relative; z-index: 20; padding-bottom: 100px; }
         .row { position: relative; padding: 0 4%; margin-bottom: 40px; }
         .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
-        .row-wrapper { position: relative; display: flex; align-items: center; }
-        .row-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; scroll-behavior: smooth; width: 100%; }
+        .row-wrapper { position: relative; display: flex; align-items: center; overflow: visible; }
+        
+        .row-scroll { 
+            display: flex; 
+            gap: 10px; 
+            overflow-x: auto; 
+            overflow-y: visible; /* Allows hover zoom to not be clipped */
+            padding: 20px 0; 
+            scrollbar-width: none; 
+            scroll-behavior: smooth; 
+            width: 100%; 
+        }
         .row-scroll::-webkit-scrollbar { display: none; }
-        .movie-card { min-width: 300px; aspect-ratio: 16/9; background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: transform 0.4s; overflow: hidden; flex-shrink: 0; }
+
+        .movie-card { 
+            min-width: 250px; /* Reduced min-width to fit on screen */
+            aspect-ratio: 16/9; 
+            background: #2f2f2f; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            transition: transform 0.4s; 
+            overflow: hidden; 
+            flex-shrink: 0; /* Prevents cards from squishing */
+        }
         .movie-card:hover { transform: scale(1.1); z-index: 100; }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; }
+
+        @media (max-width: 600px) {
+            .movie-card { min-width: 180px; } /* Even smaller on phones */
+        }
 
         /* ARROWS */
         .handle { position: absolute; top: 20px; bottom: 20px; width: 4%; background: rgba(0,0,0,0.5); color: white; display: flex; justify-content: center; align-items: center; font-size: 2rem; cursor: pointer; z-index: 1000; opacity: 0; transition: 0.3s; border: none; }
         .row:hover .handle { opacity: 1; }
+        .handle:hover { background: rgba(0,0,0,0.8); font-size: 2.5rem; }
         .left-handle { left: 0; border-radius: 0 4px 4px 0; }
         .right-handle { right: 0; border-radius: 4px 0 0 4px; }
 
         /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 6000; }
-        .modal-content { width: 90%; max-width: 850px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; }
-        video, #modal-img { width: 100%; display: none; }
+        .modal-content { width: 90%; max-width: 850px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; overflow: hidden; }
+        video, #modal-img { width: 100%; aspect-ratio: 16/9; display: none; background: #000; object-fit: contain; }
         .modal-body { padding: 30px; }
+        .modal-title { font-size: clamp(1.2rem, 3vw, 2rem); margin: 0 0 10px 0; font-weight: bold; }
+        .modal-desc { color: #a3a3a3; line-height: 1.6; font-size: clamp(0.9rem, 2vw, 1.1rem); margin: 0; }
         .close-btn { position: absolute; top: 15px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 6001; }
     </style>
 </head>
@@ -130,8 +159,8 @@
             <video id="main-player" controls></video>
             <img id="modal-img" src="">
             <div class="modal-body">
-                <h2 id="modal-title"></h2>
-                <p id="modal-desc" style="color:#a3a3a3;"></p>
+                <h2 id="modal-title" class="modal-title"></h2>
+                <p id="modal-desc" class="modal-desc"></p>
             </div>
         </div>
     </div>
@@ -160,22 +189,21 @@
             document.getElementById('hero-section').style.display = 'flex';
             document.getElementById('gallery-screen').style.display = 'block';
             
-            // Videos
+            // Populate Videos
             document.getElementById('row-videos').innerHTML = personalMemories.map((m, i) => `
-                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=11"></div>
+                <div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=12"></div>
             `).join('');
 
-            // Photo Row 1
+            // Populate Photos
             let row1HTML = "";
             for (let i = 1; i <= 10; i++) {
-                row1HTML += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=11"></div>`;
+                row1HTML += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=12"></div>`;
             }
             document.getElementById('row-photos-1').innerHTML = row1HTML;
 
-            // Photo Row 2
             let row2HTML = "";
             for (let i = 11; i <= 20; i++) {
-                row2HTML += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=11"></div>`;
+                row2HTML += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=12"></div>`;
             }
             document.getElementById('row-photos-2').innerHTML = row2HTML;
         }
@@ -193,11 +221,9 @@
             const m = personalMemories[i];
             const p = document.getElementById('main-player');
             const img = document.getElementById('modal-img');
-            
             img.style.display = 'none';
             p.style.display = 'block';
-            p.src = m.file + "?v=11";
-            
+            p.src = m.file + "?v=12";
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block';
@@ -207,11 +233,10 @@
         function openPhoto(src) {
             const p = document.getElementById('main-player');
             const img = document.getElementById('modal-img');
-            
+            p.pause(); // Pause video if playing
             p.style.display = 'none';
             img.style.display = 'block';
-            img.src = src + "?v=11";
-            
+            img.src = src + "?v=12";
             document.getElementById('modal-title').innerText = "Family Photo";
             document.getElementById('modal-desc').innerText = "A captured moment in time.";
             document.getElementById('video-modal').style.display = 'block';
