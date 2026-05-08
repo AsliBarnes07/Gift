@@ -5,33 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix Memories</title>
     <style>
-        :root { --netflix-red: #E50914; --bg-color: #141414; --text-color: #fff; --gray: #808080; }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; overflow: hidden; }
-        
-        /* INTRO */
-        #intro-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .netflix-logo { width: 300px; max-width: 80%; animation: zoomOut 3.5s forwards; }
-        @keyframes zoomOut { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; visibility: hidden; } }
+        :root { 
+            --netflix-red: #E50914; 
+            --bg-color: #141414; 
+            --text-color: #fff; 
+        }
 
-        /* PROFILES */
-        #profile-screen { display: none; text-align: center; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
-        h1 { font-size: clamp(1.5rem, 5vw, 3.5rem); margin-bottom: 30px; }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            transition: background 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* 1. PROFILE SCREEN */
+        #profile-screen {
+            display: flex;
+            text-align: center;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-color);
+        }
+
+        h1 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 30px; }
+
         .profile-container { display: flex; gap: 2vw; justify-content: center; flex-wrap: wrap; }
-        .profile { cursor: pointer; width: 150px; text-align: center; }
-        .profile img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 4px; transition: 0.2s; border: 3px solid transparent; background: #333; }
+        .profile { cursor: pointer; width: 150px; text-align: center; transition: 0.3s; }
+        .profile img { width: 100%; aspect-ratio: 1/1; border-radius: 4px; transition: 0.2s; border: 3px solid transparent; }
         .profile:hover img { transform: scale(1.05); border: 3px solid white; }
-        .profile p { color: var(--gray); margin-top: 10px; }
+        .profile p { color: #808080; margin-top: 10px; font-size: 1.2rem; }
+        .profile:hover p { color: white; }
 
-        /* GALLERY */
-        #gallery-screen { display: none; padding: 20px 4%; }
-        .logo { color: var(--netflix-red); font-size: 2rem; font-weight: bold; margin-bottom: 20px; }
-        .row-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .movie-card { background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: 0.3s; overflow: hidden; }
-        .movie-card:hover { transform: scale(1.05); z-index: 5; }
-        .movie-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+        /* 2. LOGIN ANIMATION (The "N" Intro) */
+        #login-animation {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black;
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .n-logo {
+            width: 150px;
+            animation: zoomAndFade 2.5s forwards;
+        }
+
+        @keyframes zoomAndFade {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+        /* 3. MAIN GALLERY */
+        #gallery-screen { 
+            display: none; 
+            padding: 40px 4%; 
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.6); /* Adds contrast against background image */
+        }
         
-        /* MODAL */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; overflow-y: auto; }
+        .logo { color: var(--netflix-red); font-size: 2.5rem; font-weight: bold; margin-bottom: 30px; }
+        .row-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+        .movie-card {
+            background: rgba(47, 47, 47, 0.8);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .movie-card:hover { transform: scale(1.05); z-index: 5; background: #2f2f2f; }
+        .movie-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+
+        /* 4. MODAL PLAYER */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 6000; }
         .modal-content { width: 95%; max-width: 900px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; }
         .modal-body { padding: 30px; }
         video { width: 100%; aspect-ratio: 16/9; }
@@ -40,23 +96,25 @@
 </head>
 <body>
 
-    <div id="intro-screen">
-        <img class="netflix-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
-        <audio id="tudum-sound" src="https://www.myinstants.com/media/sounds/tudum.mp3"></audio>
-    </div>
+    <audio id="tudum-sound" src="https://www.myinstants.com/media/sounds/tudum.mp3" preload="auto"></audio>
 
     <div id="profile-screen">
         <h1>Who's watching?</h1>
         <div class="profile-container">
             <div class="profile" onclick="alert('Access Denied')"><img src="./alan.jpg?v=1"><p>Alan</p></div>
             <div class="profile" onclick="alert('Access Denied')"><img src="./aiden.jpg?v=1"><p>Aiden</p></div>
-            <div class="profile" onclick="showGallery()"><img src="./mom.jpg?v=1"><p>Mom</p></div>
+            <div class="profile" onclick="startLoginSequence()"><img src="./mom.jpg?v=1"><p>Mom</p></div>
             <div class="profile" onclick="alert('Access Denied')"><img src="./dad.jpg?v=1"><p>Dad</p></div>
         </div>
     </div>
 
+    <div id="login-animation">
+        <img class="n-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
+    </div>
+
     <div id="gallery-screen">
         <div class="logo">MEMORIES</div>
+        <h2 style="margin-bottom: 25px;">Handpicked for You</h2>
         <div id="movie-grid" class="row-container"></div>
     </div>
 
@@ -65,46 +123,61 @@
         <div class="modal-content">
             <video id="main-player" controls></video>
             <div class="modal-body">
-                <h2 id="modal-title"></h2>
-                <p id="modal-desc"></p>
+                <h2 id="modal-title" style="margin:0;"></h2>
+                <p id="modal-desc" style="color:#ccc;"></p>
             </div>
         </div>
     </div>
 
     <script>
         const memoryData = [
-            { title: "Memory 1", desc: "Description here.", file: "video1.mp4", thumb: "pic1.jpg" },
-            { title: "Memory 2", desc: "Description here.", file: "video2.mp4", thumb: "pic2.jpg" }
+            { title: "Summer Lake Trip", desc: "One of the best days ever.", file: "video1.mp4", thumb: "pic1.jpg" },
+            { title: "Graduation Prep", desc: "Almost there! Thanks for everything.", file: "video2.mp4", thumb: "pic2.jpg" },
+            { title: "Family Picnic", desc: "Good food and even better company.", file: "video3.mp4", thumb: "pic3.jpg" },
+            { title: "Holiday Fun", desc: "The house was so full of life this day.", file: "video4.mp4", thumb: "pic4.jpg" }
         ];
 
-        window.onload = () => {
-            document.getElementById('tudum-sound').play().catch(() => {});
-            setTimeout(() => {
-                document.getElementById('intro-screen').style.display = 'none';
-                document.getElementById('profile-screen').style.display = 'flex';
-            }, 3500);
-        };
+        function startLoginSequence() {
+            // Play Sound
+            const sound = document.getElementById('tudum-sound');
+            sound.play();
 
-        function showGallery() {
+            // Show Animation
             document.getElementById('profile-screen').style.display = 'none';
+            document.getElementById('login-animation').style.display = 'flex';
+
+            // Wait for animation, then show Gallery
+            setTimeout(() => {
+                document.getElementById('login-animation').style.display = 'none';
+                enterGallery();
+            }, 2500);
+        }
+
+        function enterGallery() {
+            // Update Background
+            document.body.style.backgroundImage = "url('./background.jpg')";
+            
+            // Show Gallery
             document.getElementById('gallery-screen').style.display = 'block';
+            
+            // Render Cards
             const grid = document.getElementById('movie-grid');
             grid.innerHTML = memoryData.map((m, i) => `
                 <div class="movie-card" onclick="openVideo(${i})">
                     <img src="./${m.thumb}?v=1">
-                    <div style="padding:10px;"><b>${m.title}</b></div>
+                    <div style="padding:15px;"><b>${m.title}</b></div>
                 </div>
             `).join('');
         }
 
         function openVideo(i) {
             const m = memoryData[i];
-            const p = document.getElementById('main-player');
-            p.src = m.file;
+            const player = document.getElementById('main-player');
+            player.src = m.file;
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block';
-            p.play();
+            player.play();
         }
 
         function closeVideo() {
