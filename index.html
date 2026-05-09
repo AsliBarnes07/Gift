@@ -52,7 +52,7 @@
         .row-scroll::-webkit-scrollbar { display: none; }
 
         .movie-card { 
-            flex: 0 0 250px; /* Forces exactly 250px width */
+            flex: 0 0 250px; 
             height: 140px; 
             background: #2f2f2f; 
             border-radius: 4px; 
@@ -74,7 +74,7 @@
         .modal-content { width: 90%; max-width: 800px; margin: 50px auto; background: #181818; border-radius: 8px; position: relative; }
         video, #modal-img { width: 100%; display: none; }
         .modal-body { padding: 30px; }
-        .close-btn { position: absolute; top: 15px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; }
+        .close-btn { position: absolute; top: 15px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 6001; }
     </style>
 </head>
 <body>
@@ -128,7 +128,9 @@
             { title: "Where Motherhood Began", desc: "The birth of Alan. The start of it all.", file: "video1.mp4", thumb: "pic1.jpg" },
             { title: "The Family Grows", desc: "Welcoming Aiden! We all love him so much.", file: "video2.mp4", thumb: "pic2.jpg" },
             { title: "Zen Joins the Pack", desc: "Four paws and a heart of gold! Zen brought so much joy.", file: "video3.mp4", thumb: "pic3.jpg" },
-            { title: "To Many More Memories", desc: "Thank you for being such an awesome mother.", file: "video4.mp4", thumb: "pic4.jpg" }
+            { title: "To Many More Memories", desc: "Thank you for being such an awesome mother.", file: "video4.mp4", thumb: "pic4.jpg" },
+            { title: "Young Kids playing", desc: "A throwback to the younger years. Time flies!", file: "video5.mp4", thumb: "pic5.jpg" },
+            { title: "Young Kids messing around", desc: "A sweet memory of Aiden and Alan Playing.", file: "video6.mp4", thumb: "pic6.jpg" }
         ];
 
         function startLogin() {
@@ -147,12 +149,12 @@
             document.getElementById('hero-section').style.display = 'flex';
             document.getElementById('gallery-screen').style.display = 'block';
             
-            document.getElementById('vids').innerHTML = personalMemories.map((m, i) => `<div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=13"></div>`).join('');
+            document.getElementById('vids').innerHTML = personalMemories.map((m, i) => `<div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=14"></div>`).join('');
 
-            let h1 = ""; for (let i = 1; i <= 10; i++) h1 += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=13"></div>`;
+            let h1 = ""; for (let i = 1; i <= 10; i++) h1 += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=14"></div>`;
             document.getElementById('p1').innerHTML = h1;
 
-            let h2 = ""; for (let i = 11; i <= 20; i++) h2 += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=13"></div>`;
+            let h2 = ""; for (let i = 11; i <= 20; i++) h2 += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=14"></div>`;
             document.getElementById('p2').innerHTML = h2;
         }
 
@@ -163,7 +165,7 @@
             const m = personalMemories[i];
             const p = document.getElementById('main-player');
             const img = document.getElementById('modal-img');
-            img.style.display = 'none'; p.style.display = 'block'; p.src = m.file + "?v=13";
+            img.style.display = 'none'; p.style.display = 'block'; p.src = m.file + "?v=14";
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block'; p.play();
@@ -172,7 +174,7 @@
         function openPhoto(src) {
             const p = document.getElementById('main-player');
             const img = document.getElementById('modal-img');
-            p.style.display = 'none'; img.style.display = 'block'; img.src = src + "?v=13";
+            p.style.display = 'none'; img.style.display = 'block'; img.src = src + "?v=14";
             document.getElementById('modal-title').innerText = "Family Photo";
             document.getElementById('modal-desc').innerText = "A captured moment in time.";
             document.getElementById('video-modal').style.display = 'block';
