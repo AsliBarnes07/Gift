@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Memories</title>
+    <title>Momflix Memories</title>
     <style>
         :root { --netflix-red: #E50914; --bg-color: #141414; --text-color: #fff; }
         body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; overflow-x: hidden; }
 
         /* NAVIGATION */
         #main-nav { position: fixed; top: 0; width: 100%; height: 70px; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 10%, transparent); display: flex; align-items: center; padding: 0 4%; z-index: 1000; }
-        .nav-logo { color: var(--netflix-red); font-size: 1.8rem; font-weight: bold; text-transform: uppercase; }
+        .nav-logo { color: var(--netflix-red); font-size: 2.2rem; font-weight: bold; text-transform: uppercase; letter-spacing: -1px; }
 
         /* PROFILES */
         #profile-screen { display: flex; text-align: center; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
@@ -20,10 +20,10 @@
         .profile:hover img { transform: scale(1.05); border: 3px solid white; }
         .profile p { color: #808080; margin-top: 10px; font-size: 1.2rem; }
 
-        /* TRANSITION */
+        /* MOMFLIX INTRO ANIMATION */
         #login-animation { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 5000; justify-content: center; align-items: center; }
-        .n-logo { width: 150px; animation: zoomAndFade 2.5s forwards; }
-        @keyframes zoomAndFade { 0% { transform: scale(1); } 100% { transform: scale(4); opacity: 0; } }
+        .momflix-text { color: var(--netflix-red); font-size: 5rem; font-weight: bold; text-transform: uppercase; letter-spacing: -2px; animation: zoomAndFade 2.5s forwards; }
+        @keyframes zoomAndFade { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
 
         /* HERO */
         #hero-section { height: 85vh; position: relative; background-size: cover; background-position: center; display: none; align-items: center; padding: 0 4%; }
@@ -34,32 +34,14 @@
         .btn-play { background: white; color: black; }
         .btn-info { background: rgba(109, 109, 110, 0.7); color: white; margin-left: 10px; }
 
-        /* ROWS - STRICT LAYOUT */
+        /* ROWS */
         #gallery-screen { display: none; margin-top: -120px; position: relative; z-index: 20; padding-bottom: 100px; }
         .row { position: relative; padding: 0 4%; margin-bottom: 40px; }
         .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
         .row-wrapper { position: relative; display: flex; align-items: center; }
-        
-        .row-scroll { 
-            display: flex; 
-            gap: 10px; 
-            overflow-x: auto; 
-            padding: 20px 0; 
-            scrollbar-width: none; 
-            scroll-behavior: smooth; 
-            width: 100%; 
-        }
+        .row-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; scroll-behavior: smooth; width: 100%; }
         .row-scroll::-webkit-scrollbar { display: none; }
-
-        .movie-card { 
-            flex: 0 0 250px; 
-            height: 140px; 
-            background: #2f2f2f; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            transition: transform 0.4s; 
-            overflow: hidden; 
-        }
+        .movie-card { flex: 0 0 250px; height: 140px; background: #2f2f2f; border-radius: 4px; cursor: pointer; transition: transform 0.4s; overflow: hidden; }
         .movie-card:hover { transform: scale(1.1); z-index: 100; }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -92,11 +74,11 @@
     </div>
 
     <div id="login-animation">
-        <img class="n-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
+        <div class="momflix-text">Momflix</div>
     </div>
 
     <div id="main-content" style="display:none;">
-        <nav id="main-nav"><div class="nav-logo">Memories</div></nav>
+        <nav id="main-nav"><div class="nav-logo">Momflix</div></nav>
         <div id="hero-section">
             <div class="hero-content">
                 <div class="hero-title">Barnes Family Memories</div>
@@ -129,8 +111,8 @@
             { title: "The Family Grows", desc: "Welcoming Aiden! We all love him so much.", file: "video2.mp4", thumb: "pic2.jpg" },
             { title: "Zen Joins the Pack", desc: "Four paws and a heart of gold! Zen brought so much joy.", file: "video3.mp4", thumb: "pic3.jpg" },
             { title: "To Many More Memories", desc: "Thank you for being such an awesome mother.", file: "video4.mp4", thumb: "pic4.jpg" },
-            { title: "Young Kids playing", desc: "A throwback to the younger years. Time flies!", file: "video5.mp4", thumb: "pic5.jpg" },
-            { title: "Young Kids messing around", desc: "A sweet memory of Aiden and Alan Playing.", file: "video6.mp4", thumb: "pic6.jpg" }
+            { title: "Young Alan", desc: "A throwback to Alan's younger years. Time flies!", file: "video5.mp4", thumb: "pic5.jpg" },
+            { title: "Young Aiden", desc: "A sweet memory of Aiden growing up.", file: "video6.mp4", thumb: "pic6.jpg" }
         ];
 
         function startLogin() {
@@ -149,23 +131,23 @@
             document.getElementById('hero-section').style.display = 'flex';
             document.getElementById('gallery-screen').style.display = 'block';
             
-            document.getElementById('vids').innerHTML = personalMemories.map((m, i) => `<div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=14"></div>`).join('');
+            document.getElementById('vids').innerHTML = personalMemories.map((m, i) => `<div class="movie-card" onclick="openVideo(${i})"><img src="./${m.thumb}?v=15"></div>`).join('');
 
-            let h1 = ""; for (let i = 1; i <= 10; i++) h1 += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=14"></div>`;
+            let h1 = ""; for (let i = 1; i <= 10; i++) h1 += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=15"></div>`;
             document.getElementById('p1').innerHTML = h1;
 
-            let h2 = ""; for (let i = 11; i <= 20; i++) h2 += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=14"></div>`;
+            let h2 = ""; for (let i = 11; i <= 20; i++) h2 += `<div class="movie-card" onclick="openPhoto('./xpic${i}.jpg')"><img src="./xpic${i}.jpg?v=15"></div>`;
             document.getElementById('p2').innerHTML = h2;
         }
 
         function scrollRow(id, dir) { const el = document.getElementById(id); el.scrollBy({ left: (el.clientWidth * 0.8) * dir, behavior: 'smooth' }); }
-        function showBirthdayMessage() { alert("Happy Mothers Day Mama! We love you soooo much. Enjoy this netflix memory lane!"); }
+        function showBirthdayMessage() { alert("Happy Birthday mama! We love you soooo much. Enjoy this netflix memory lane!"); }
 
         function openVideo(i) {
             const m = personalMemories[i];
             const p = document.getElementById('main-player');
             const img = document.getElementById('modal-img');
-            img.style.display = 'none'; p.style.display = 'block'; p.src = m.file + "?v=14";
+            img.style.display = 'none'; p.style.display = 'block'; p.src = m.file + "?v=15";
             document.getElementById('modal-title').innerText = m.title;
             document.getElementById('modal-desc').innerText = m.desc;
             document.getElementById('video-modal').style.display = 'block'; p.play();
@@ -174,7 +156,7 @@
         function openPhoto(src) {
             const p = document.getElementById('main-player');
             const img = document.getElementById('modal-img');
-            p.style.display = 'none'; img.style.display = 'block'; img.src = src + "?v=14";
+            p.style.display = 'none'; img.style.display = 'block'; img.src = src + "?v=15";
             document.getElementById('modal-title').innerText = "Family Photo";
             document.getElementById('modal-desc').innerText = "A captured moment in time.";
             document.getElementById('video-modal').style.display = 'block';
